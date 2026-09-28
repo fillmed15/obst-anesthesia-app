@@ -1,0 +1,11 @@
+{
+  "name": "Obst Anesthesia",
+  "short_name": "Obst Anest",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#F9F7FA",
+  "theme_color": "#7250A6",
+  "description": "Suporte mobile-first à anestesia obstétrica.",
+  "orientation": "portrait-primary",
+  "prefer_related_applications": false
+}
