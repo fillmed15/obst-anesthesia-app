@@ -1,3 +1,4 @@
+import 'package:flutter/widgets.dart' show Size;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:obst_anesthesia_app/app.dart';
 import 'package:obst_anesthesia_app/services/app_state.dart';
