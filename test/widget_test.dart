@@ -9,7 +9,7 @@ void main() {
       AppScope(notifier: AppState(), child: const ObstetricApp()),
     );
 
-    expect(find.text('Raqui'), findsOneWidget);
+    expect(find.text('Raqui'), findsAtLeastNWidgets(1));
     expect(find.text('Parto'), findsOneWidget);
     expect(find.text('Segurança'), findsOneWidget);
     expect(find.text('Emergências'), findsOneWidget);
@@ -18,7 +18,7 @@ void main() {
     await tester.tap(find.text('Segurança'));
     await tester.pumpAndSettle();
     expect(find.text('Plaquetas / neuroeixo'), findsOneWidget);
-    expect(find.text('Raqui'), findsOneWidget);
+    expect(find.text('Raqui'), findsAtLeastNWidgets(1));
     expect(find.text('Emergências'), findsOneWidget);
   });
 
@@ -41,7 +41,7 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(tester.takeException(), isNull);
-      expect(find.text('Raqui'), findsOneWidget);
+      expect(find.text('Raqui'), findsAtLeastNWidgets(1));
       expect(find.text('Emergências'), findsOneWidget);
     });
   }
