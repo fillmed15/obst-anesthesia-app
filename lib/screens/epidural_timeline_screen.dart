@@ -9,7 +9,8 @@ import '../theme/app_theme.dart';
 import '../widgets/common.dart';
 
 class EpiduralTimelineScreen extends StatefulWidget {
-  const EpiduralTimelineScreen({super.key});
+  const EpiduralTimelineScreen({super.key, this.embedded = false});
+  final bool embedded;
   @override
   State<EpiduralTimelineScreen> createState() => _EpiduralTimelineScreenState();
 }
@@ -31,10 +32,7 @@ class _EpiduralTimelineScreenState extends State<EpiduralTimelineScreen> {
     final state = AppScope.of(context);
     final catheter = state.catheter;
     final boluses = state.boluses.reversed.toList();
-    return AppPage(
-      title: 'Cateter e linha do tempo',
-      actions: [IconButton(tooltip: 'Registrar dose', icon: const Icon(Icons.add_circle_outline), onPressed: () => _addBolus(context))],
-      child: ResponsiveBody(children: [
+    final content = ResponsiveBody(children: [
         ClinicalCard(title: 'Instalação', icon: Icons.medical_information_outlined, child: Column(children: [
           Row(children: [
             Expanded(child: _simpleField('Nível', catheter.punctureLevel, (v) => state.updateCatheter(() => catheter.punctureLevel = v))),
@@ -64,7 +62,12 @@ class _EpiduralTimelineScreenState extends State<EpiduralTimelineScreen> {
         ],
         const SizedBox(height: 6),
         FilledButton.icon(onPressed: () => _addBolus(context), icon: const Icon(Icons.add), label: const Text('Registrar nova administração')),
-      ]),
+      ]);
+    if (widget.embedded) return content;
+    return AppPage(
+      title: 'Cateter e linha do tempo',
+      actions: [IconButton(tooltip: 'Registrar dose', icon: const Icon(Icons.add_circle_outline), onPressed: () => _addBolus(context))],
+      child: content,
     );
   }
 

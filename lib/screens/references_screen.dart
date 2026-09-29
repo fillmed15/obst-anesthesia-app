@@ -5,20 +5,21 @@ import '../models/models.dart';
 import '../widgets/common.dart';
 
 class ReferencesScreen extends StatelessWidget {
-  const ReferencesScreen({super.key});
+  const ReferencesScreen({super.key, this.embedded = false});
+  final bool embedded;
 
   @override
   Widget build(BuildContext context) {
     final groups = <String, List<EvidenceReference>>{};
     for (final ref in EvidenceCatalog.references) { groups.putIfAbsent(ref.group, () => []).add(ref); }
-    return AppPage(title: 'Referências', showPatient: false, child: ResponsiveBody(children: [
+    final content = ResponsiveBody(children: [
       for (final entry in groups.entries)
         ClinicalCard(title: entry.key, icon: Icons.menu_book_outlined, child: Column(children: [
           for (final ref in entry.value)
             ListTile(
               contentPadding: EdgeInsets.zero,
               title: Text(ref.title, style: const TextStyle(fontWeight: FontWeight.w700)),
-              subtitle: Text('${ref.authors} • ${ref.year}${ref.doi == null ? '' : '\nDOI ${ref.doi}'}${ref.pmid == null ? '' : ' • PMID ${ref.pmid}'}\nRevisado no app: 28/09/2026'),
+              subtitle: Text('${ref.authors} • ${ref.year}${ref.doi == null ? '' : '\nDOI ${ref.doi}'}${ref.pmid == null ? '' : ' • PMID ${ref.pmid}'}\nRevisado no app: 29/09/2026'),
               trailing: const Icon(Icons.info_outline),
               onTap: () => showEvidenceSheet(context, [ref.id]),
             ),
@@ -33,6 +34,8 @@ class ReferencesScreen extends StatelessWidget {
             children: [Align(alignment: Alignment.centerLeft, child: Text('População: ${row.population}\nTécnica: ${row.technique}\nDesfecho: ${row.outcome}\nEstimativa: ${row.estimate}\nObservações: ${row.notes}'))],
           ),
       ])),
-    ]));
+    ]);
+    if (embedded) return content;
+    return AppPage(title: 'Referências', showPatient: false, child: content);
   }
 }

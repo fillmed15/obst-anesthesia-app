@@ -5,9 +5,9 @@ Flutter Web mobile-first para consulta e apoio à decisão em anestesia obstétr
 ## Estado do primeiro ciclo
 
 - Tema lilás/rosa profissional e responsivo.
-- Home com Raquianestesia, Analgesia de Parto, Risco & Segurança e Emergências.
+- Navegação inferior persistente com Raquianestesia, Analgesia de Parto, Risco & Segurança e Emergências.
 - Perfil clínico opcional e reutilizado entre módulos.
-- Raquianestesia: dose informada pelo usuário e cálculo dose ↔ volume; sem “dose ideal”.
+- Raquianestesia: dose informada pelo usuário, cálculo dose ↔ volume, posição na faixa estudada, perfil temporal e interpretação de fentanil, sufentanil e morfina; sem “dose ideal”.
 - Analgesia: cálculos de solução, PIEB e PCEA com distinção de máximo teórico.
 - Cateter peridural: dados de instalação, histórico de bolus/repique, relógio e janela temporal baseada em faixa explicitamente informada.
 - Segurança: plaquetas (SOAP 2021) e cenários iniciais de anticoagulação (ASRA 2025).
@@ -43,8 +43,7 @@ test/                testes de cálculo
 
 ## Pendências deliberadas
 
-- Latência, duração e regressão por anestésico intratecal.
-- Doses de ropivacaína, levobupivacaína e bupivacaína isobárica.
+- Refinar faixas temporais por subgrupos, baricidade, técnica e adjuvantes à medida que novas evidências forem incorporadas.
 - Regimes clínicos padrão de PIEB/PCEA e tempo farmacológico de repique.
 - Conversão de peridural para cesárea.
 - Doses completas nos QRHs de eclâmpsia, hipotensão e bloqueio alto.
@@ -61,4 +60,4 @@ Nenhum desses itens é declarado funcional até revisão dedicada.
 - WHO/FIGO/ICM postpartum haemorrhage guideline (2025).
 - AHA Cardiac Arrest in Pregnancy Algorithm (2025).
 
-Última revisão clínica desta versão: 28/09/2026.
+Última revisão clínica desta versão: 29/09/2026.

@@ -1,18 +1,25 @@
-import 'package:flutter/widgets.dart' show Size;
+import 'package:flutter/material.dart' show BackButton, Size;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:obst_anesthesia_app/app.dart';
 import 'package:obst_anesthesia_app/services/app_state.dart';
 
 void main() {
-  testWidgets('home exibe os quatro módulos principais', (tester) async {
+  testWidgets('navegação inferior mantém as quatro áreas principais', (tester) async {
     await tester.pumpWidget(
       AppScope(notifier: AppState(), child: const ObstetricApp()),
     );
 
-    expect(find.text('RAQUIANESTESIA'), findsOneWidget);
-    expect(find.text('ANALGESIA DE PARTO'), findsOneWidget);
-    expect(find.text('RISCO & SEGURANÇA'), findsOneWidget);
-    expect(find.text('EMERGÊNCIAS'), findsOneWidget);
+    expect(find.text('Raqui'), findsOneWidget);
+    expect(find.text('Parto'), findsOneWidget);
+    expect(find.text('Segurança'), findsOneWidget);
+    expect(find.text('Emergências'), findsOneWidget);
+    expect(find.byType(BackButton), findsNothing);
+
+    await tester.tap(find.text('Segurança'));
+    await tester.pumpAndSettle();
+    expect(find.text('Plaquetas / neuroeixo'), findsOneWidget);
+    expect(find.text('Raqui'), findsOneWidget);
+    expect(find.text('Emergências'), findsOneWidget);
   });
 
   for (final viewport in <String, Size>{
@@ -34,8 +41,8 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(tester.takeException(), isNull);
-      expect(find.text('RAQUIANESTESIA'), findsOneWidget);
-      expect(find.text('EMERGÊNCIAS'), findsOneWidget);
+      expect(find.text('Raqui'), findsOneWidget);
+      expect(find.text('Emergências'), findsOneWidget);
     });
   }
 }

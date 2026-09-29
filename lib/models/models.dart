@@ -2,6 +2,90 @@ import 'package:flutter/material.dart';
 
 enum EvidenceKind { calculation, estimate, guideline, pending }
 
+enum DosePosition { belowStudied, withinStudied, aboveStudied }
+
+class TimeEstimate {
+  const TimeEstimate({
+    required this.label,
+    required this.minMinutes,
+    required this.maxMinutes,
+    required this.endpoint,
+  });
+
+  final String label;
+  final int minMinutes;
+  final int maxMinutes;
+  final String endpoint;
+}
+
+class SpinalDrugProfile {
+  const SpinalDrugProfile({
+    required this.id,
+    required this.label,
+    required this.defaultConcentrationMgMl,
+    required this.studiedMinMg,
+    required this.studiedMaxMg,
+    required this.latency,
+    required this.surgicalDuration,
+    required this.sensoryRegression,
+    required this.motorRegression,
+    required this.referenceIds,
+    required this.evidenceContext,
+  });
+
+  final String id;
+  final String label;
+  final double defaultConcentrationMgMl;
+  final double studiedMinMg;
+  final double studiedMaxMg;
+  final TimeEstimate latency;
+  final TimeEstimate surgicalDuration;
+  final TimeEstimate sensoryRegression;
+  final TimeEstimate motorRegression;
+  final List<String> referenceIds;
+  final String evidenceContext;
+}
+
+class AdjuvantInterpretation {
+  const AdjuvantInterpretation({
+    required this.name,
+    required this.doseMcg,
+    required this.summary,
+    required this.details,
+    required this.referenceIds,
+    this.warning,
+  });
+
+  final String name;
+  final double doseMcg;
+  final String summary;
+  final String details;
+  final List<String> referenceIds;
+  final String? warning;
+}
+
+class SpinalEstimate {
+  const SpinalEstimate({
+    required this.profile,
+    required this.doseMg,
+    required this.concentrationMgMl,
+    required this.volumeMl,
+    required this.dosePosition,
+    required this.adjuvants,
+    required this.alerts,
+    required this.referenceIds,
+  });
+
+  final SpinalDrugProfile profile;
+  final double doseMg;
+  final double concentrationMgMl;
+  final double volumeMl;
+  final DosePosition dosePosition;
+  final List<AdjuvantInterpretation> adjuvants;
+  final List<String> alerts;
+  final List<String> referenceIds;
+}
+
 class EvidenceReference {
   const EvidenceReference({
     required this.id,

@@ -14,6 +14,7 @@ class LaborAnalgesiaScreen extends StatefulWidget {
 
 class _LaborAnalgesiaScreenState extends State<LaborAnalgesiaScreen> {
   String technique = 'Peridural';
+  String section = 'Analgesia';
   String mode = 'PIEB';
   String drug = 'Bupivacaína';
   final local = TextEditingController();
@@ -29,6 +30,25 @@ class _LaborAnalgesiaScreenState extends State<LaborAnalgesiaScreen> {
 
   @override
   Widget build(BuildContext context) {
+    if (section == 'Cateter') {
+      return AppPage(
+        title: 'Analgesia de parto',
+        child: Column(children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(12, 8, 12, 0),
+            child: SegmentedButton<String>(
+              segments: const [
+                ButtonSegment(value: 'Analgesia', label: Text('Analgesia')),
+                ButtonSegment(value: 'Cateter', label: Text('Cateter / tempo')),
+              ],
+              selected: {section},
+              onSelectionChanged: (value) => setState(() => section = value.first),
+            ),
+          ),
+          const Expanded(child: EpiduralTimelineScreen(embedded: true)),
+        ]),
+      );
+    }
     final localMgMl = parseNumber(local.text);
     final opioidMcgMl = parseNumber(opioid.text) ?? 0;
     final volumeMl = parseNumber(volume.text);
@@ -45,6 +65,14 @@ class _LaborAnalgesiaScreenState extends State<LaborAnalgesiaScreen> {
     return AppPage(
       title: 'Analgesia de parto',
       child: ResponsiveBody(children: [
+        SegmentedButton<String>(
+          segments: const [
+            ButtonSegment(value: 'Analgesia', label: Text('Analgesia')),
+            ButtonSegment(value: 'Cateter', label: Text('Cateter / tempo')),
+          ],
+          selected: {section},
+          onSelectionChanged: (value) => setState(() => section = value.first),
+        ),
         ClinicalCard(title: 'Técnica', icon: Icons.route_outlined, child: SegmentedButton<String>(
           segments: const [ButtonSegment(value: 'Peridural', label: Text('Peridural')), ButtonSegment(value: 'CSE', label: Text('CSE')), ButtonSegment(value: 'DPE', label: Text('DPE'))],
           selected: {technique},
@@ -73,8 +101,6 @@ class _LaborAnalgesiaScreenState extends State<LaborAnalgesiaScreen> {
             const SizedBox(height: 8),
             Text('Máximo teórico pelo lockout; não representa dose administrada.', style: Theme.of(context).textTheme.bodySmall),
           ])),
-        const SizedBox(height: 4),
-        FilledButton.icon(onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => const EpiduralTimelineScreen())), icon: const Icon(Icons.timeline), label: const Text('Cateter, bolus e linha do tempo')),
       ]),
     );
   }

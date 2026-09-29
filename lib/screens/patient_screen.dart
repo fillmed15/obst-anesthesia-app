@@ -6,7 +6,8 @@ import '../services/app_state.dart';
 import '../widgets/common.dart';
 
 class PatientScreen extends StatefulWidget {
-  const PatientScreen({super.key});
+  const PatientScreen({super.key, this.embedded = false});
+  final bool embedded;
   @override
   State<PatientScreen> createState() => _PatientScreenState();
 }
@@ -45,10 +46,7 @@ class _PatientScreenState extends State<PatientScreen> {
   Widget build(BuildContext context) {
     final state = AppScope.of(context);
     final p = state.patient;
-    return AppPage(
-      title: 'Paciente',
-      showPatient: false,
-      child: ResponsiveBody(children: [
+    final content = ResponsiveBody(children: [
         ClinicalCard(title: 'Contexto clínico', icon: Icons.person_outline, child: Column(children: [
           _field('Identificação opcional', c['id']!, (v) => state.updatePatient(() => p.identifier = v.trim())),
           const SizedBox(height: 10),
@@ -101,8 +99,9 @@ class _PatientScreenState extends State<PatientScreen> {
             onSelected: (selected) => state.updatePatient(() { selected ? p.conditions.add(condition) : p.conditions.remove(condition); }),
           )).toList(),
         )),
-      ]),
-    );
+      ]);
+    if (widget.embedded) return content;
+    return AppPage(title: 'Paciente', showPatient: false, child: content);
   }
 
   Widget _field(String label, TextEditingController controller, ValueChanged<String> onChanged, {String? suffix, bool decimal = false}) {

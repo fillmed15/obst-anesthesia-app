@@ -29,6 +29,7 @@ class AppPage extends StatelessWidget {
     final patient = AppScope.of(context).patient;
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Text(title),
           if (showPatient)
@@ -36,8 +37,17 @@ class AppPage extends StatelessWidget {
         ]),
         actions: [
           ...actions,
+          IconButton(
+            tooltip: 'Referências',
+            icon: const Icon(Icons.menu_book_outlined),
+            onPressed: () => showReferencesSheet(context),
+          ),
           if (showPatient)
-            IconButton(tooltip: 'Paciente', icon: const Icon(Icons.person_outline), onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => const PatientScreen()))),
+            IconButton(
+              tooltip: 'Paciente',
+              icon: const Icon(Icons.person_outline),
+              onPressed: () => showPatientSheet(context),
+            ),
         ],
       ),
       body: SafeArea(child: child),
@@ -160,8 +170,14 @@ Future<void> showEvidenceSheet(BuildContext context, List<String> ids) {
             ],
             OutlinedButton.icon(
               onPressed: () {
+                final rootContext = Navigator.of(context).context;
                 Navigator.pop(context);
-                Navigator.of(context).push(MaterialPageRoute(builder: (_) => const ReferencesScreen()));
+                Future<void>.delayed(
+                  Duration.zero,
+                  () {
+                    if (rootContext.mounted) showReferencesSheet(rootContext);
+                  },
+                );
               },
               icon: const Icon(Icons.library_books_outlined),
               label: const Text('Todas as referências'),
@@ -172,6 +188,64 @@ Future<void> showEvidenceSheet(BuildContext context, List<String> ids) {
     ),
   );
 }
+
+Future<void> showPatientSheet(BuildContext context) => showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      useSafeArea: true,
+      showDragHandle: true,
+      builder: (context) => FractionallySizedBox(
+        heightFactor: .94,
+        child: Column(children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 0, 8, 4),
+            child: Row(children: [
+              Expanded(
+                child: Text(
+                  'Paciente',
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w800),
+                ),
+              ),
+              IconButton(
+                tooltip: 'Fechar',
+                icon: const Icon(Icons.close),
+                onPressed: () => Navigator.pop(context),
+              ),
+            ]),
+          ),
+          const Expanded(child: PatientScreen(embedded: true)),
+        ]),
+      ),
+    );
+
+Future<void> showReferencesSheet(BuildContext context) => showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      useSafeArea: true,
+      showDragHandle: true,
+      builder: (context) => FractionallySizedBox(
+        heightFactor: .94,
+        child: Column(children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 0, 8, 4),
+            child: Row(children: [
+              Expanded(
+                child: Text(
+                  'Referências',
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w800),
+                ),
+              ),
+              IconButton(
+                tooltip: 'Fechar',
+                icon: const Icon(Icons.close),
+                onPressed: () => Navigator.pop(context),
+              ),
+            ]),
+          ),
+          const Expanded(child: ReferencesScreen(embedded: true)),
+        ]),
+      ),
+    );
 
 class ResponsiveBody extends StatelessWidget {
   const ResponsiveBody({super.key, required this.children});
